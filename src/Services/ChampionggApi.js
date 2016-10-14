@@ -8,10 +8,14 @@ import * as api_data from '../api_data';
 class ChampionggApi {
 
   constructor(outputPath){
+    this.base ={
+      champion : 'http://api.champion.gg/champion'
+    }
+
     this.endpoints = {
-      allChampionData : "http://api.champion.gg/champion",
-      bestItems: "http://api.champion.gg/champion/%CHAMPION%/items/finished/mostWins",
-      popularItems: "http://api.champion.gg/champion/%CHAMPION%/items/finished/mostPopular"
+      bestItems: `${this.base.champion}/%CHAMPION%/items/finished/mostWins`,
+      popularItems: `${this.base.champion}/%CHAMPION%/items/finished/mostPopular`,
+      matchup: `${this.base.champion}/%CHAMPION%/items/matchup`
     }
 
     this.getRequest =  {
@@ -41,13 +45,36 @@ class ChampionggApi {
     });
   }
 
-  getBestBuild(champion, resolve){
+
+  capitalizeFirstLetter(string){
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  getChampionFromEntities(entities, rank){
+    if(rank > entities.champion.lenth) return null;
+    return capitalizeFirstLetter(entities.champion[rank].value);
+  }
+
+  fetchBestBuild(entities, resolve){
+    const champion = getChampionFromEntities(entities,0);
+
     if(!this.championDoesExist(champion)) this.resolveError("Sorry I did not understand which champion was requested", resolve);
 
     // Query champion.gg for best build
+    var fetchUri;
+
+    switch(entities.popularity[0].value){
+      case 'best':
+        fetchUri = this.makeUri(this.endpoints.bestItems, champion);
+        break;
+      default:
+        fetchUri = this.makeUri(this.endpoints.popularItems, champion);
+      break;
+    }
+
     return rp({
       ...this.getRequest,
-      uri: this.makeUri(this.endpoints.bestItems, champion)
+      uri: fetchUri
     })
     .then(function(json){
 
@@ -60,14 +87,14 @@ class ChampionggApi {
       context.text = ``;
       for (var record of json){
         var itemList = lodash.map(record.items, (id) => { return api_data.items[id].name; });
-        context.text += `Best build for ${champion} in ${record.role} are ${itemList}\n`;
+        context.text += `Build for ${champion} in ${record.role} are ${itemList}\n`;
       }
 
       return resolve(context);
     });
   }
 
-  getPopularBuild(champion, resolve){
+  getMatchups(entities, resolve){
     if(!this.championDoesExist(champion)) this.resolveError("Sorry I did not understand which champion was requested", resolve);
 
     // Query champion.gg for best build

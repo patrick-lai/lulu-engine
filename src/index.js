@@ -25,11 +25,6 @@ const accessToken = (() => {
   return Config.serverToken;
 })();
 
-
-const capitalizeFirstLetter = (string) => {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 const actions = {
   send(request, response) {
     const {sessionId, context, entities} = request;
@@ -40,18 +35,11 @@ const actions = {
       return resolve();
     });
   },
-  ['get-best-build']({entities, context}) {
+  ['fetch-build']({entities, context}) {
     return new Promise(function(resolve, reject) {
-      const champion = capitalizeFirstLetter(entities.champion[0].value);
-      return championggApi.getBestBuild(champion, resolve);
+      return championggApi.fetchBuild(entities, resolve);
     });
-  },
-  ['get-popular-build']({entities, context}) {
-    return new Promise(function(resolve, reject) {
-      const champion = capitalizeFirstLetter(entities.champion[0].value);
-      return championggApi.getPopularBuild(champion, resolve);
-    });
-  },
+  }
 };
 
 const client = new Wit({accessToken, actions});
