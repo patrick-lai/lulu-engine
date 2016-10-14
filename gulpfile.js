@@ -8,9 +8,14 @@ var del = require('del');
 var $ = loadPlugins();
 
 gulp.task('build', ['clean'], function () {
-  return gulp.src("src/**/*.js")
+
+  // Copy static
+  gulp.src('./src/**/*.json')
+  .pipe(gulp.dest("dist"));
+
+  return gulp.src('./src/**/*.js')
     .pipe(babel({
-      presets: ['es2015']
+      presets: ['es2015','stage-2']
     }))
     .pipe(gulp.dest("dist"));
 });
