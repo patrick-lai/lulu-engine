@@ -1,0 +1,26 @@
+{
+  "name": "lulu-engine",
+  "version": "1.0.0",
+  "description": "Game companion powered by wit.ai",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/patrick-lai/lulu-engine.git"
+  },
+  "author": "Patrick Lai",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/patrick-lai/lulu-engine/issues"
+  },
+  "homepage": "https://github.com/patrick-lai/lulu-engine#readme",
+  "dependencies": {
+    "node-wit": "^4.1.0"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
