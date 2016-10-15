@@ -71,7 +71,7 @@ class FbChatBot {
     // Webhook setup
     this.app.get('/webhook', verfication, (req, res) => {
       if (req.query['hub.mode'] === 'subscribe' &&
-      req.query['hub.verify_token'] === Config.FB_VERIFY_TOKEN) {
+      req.query['hub.verify_token'] === process.env.FB_VERIFY_TOKEN || config.FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
       } else {
         res.sendStatus(400);
@@ -153,7 +153,7 @@ class FbChatBot {
       recipient: { id },
       message: { text },
     });
-    const qs = 'access_token=' + encodeURIComponent(Config.FB_PAGE_TOKEN);
+    const qs = 'access_token=' + encodeURIComponent(process.env.FB_PAGE_TOKEN || config.FB_PAGE_TOKEN);
     return fetch('https://graph.facebook.com/me/messages?' + qs, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
