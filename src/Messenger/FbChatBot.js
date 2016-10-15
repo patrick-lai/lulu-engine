@@ -59,13 +59,6 @@ class FbChatBot {
 
   setUpWebhook(){
 
-    this.app.use(({method, url}, rsp, next) => {
-      rsp.on('finish', () => {
-        console.log(`${rsp.statusCode} ${method} ${url}`);
-      });
-      next();
-    });
-
     var verfication  = bodyParser.json({ verify: this.verifyRequestSignature });
 
     // Webhook setup
@@ -118,10 +111,8 @@ class FbChatBot {
                   // Our bot did everything it has to do.
                   // Now it's waiting for further messages to proceed.
 
-                  // Send the message back to the user                  
+                  // Send the message back to the user
                   this.fbMessage(sender,context.text);
-
-                  console.log('Waiting for next user messages');
 
                   // Based on the session state, you might want to reset the session.
                   // This depends heavily on the business logic of your bot.
