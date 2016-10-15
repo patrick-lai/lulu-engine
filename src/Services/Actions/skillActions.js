@@ -41,26 +41,24 @@ var skillActions = {
       context.text = ``;
       for (var record of json){
         // Figure which one to max
+
         var order = [{
           skill: "Q",
-          lastLeveled: lodash.findLastIndex(record.order, "Q")
+          lastLeveled: lodash.findLastIndex(record.order, (s)=>{ return s == 'Q'})
         },{
           skill: "W",
-          lastLeveled: lodash.findLastIndex(record.order, "W")
+          lastLeveled: lodash.findLastIndex(record.order, (s)=>{ return s == 'W'})
         },{
           skill: "E",
-          lastLeveled: lodash.findLastIndex(record.order, "E")
-        },{
-          skill: "R",
-          lastLeveled: lodash.findLastIndex(record.order, "R")
+          lastLeveled: lodash.findLastIndex(record.order, (s)=>{ return s == 'E'})
         }]
 
         var sortedOrder = lodash.chain(order)
-                                .sortBy((s) => { return s.lastLeveled})
+                                  .sortBy((s) => { return s.lastLeveled})
                                 .map((s) => { return s.skill })
                                 .value();
 
-        context.text += `Max ${record.role} ${champion} in this order: ${sortedOrder} \n\n`;
+        context.text += `Max in order ${sortedOrder} for ${record.role} ${champion} \n\n`;
       }
 
       return resolve(context);
@@ -100,7 +98,7 @@ var skillActions = {
       // Humanize the data
       context.text = ``;
       for (var record of json){
-        context.text += `${record.role} ${champion} ${popularity} summoners are ${record.summoner1}, ${record.summoner2} \n\n`;
+        context.text += `${record.role} ${champion} ${popularity} summoners are ${record.summoner1} and ${record.summoner2} \n\n`;
       }
 
       return resolve(context);

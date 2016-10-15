@@ -40,7 +40,7 @@ var runeActions = {
       // Humanize the data
       context.text = ``;
       for (var record of json){
-        var runeList = lodash.map(record.runes, (r) => { return `${r.number}x ${r.description}`; });
+        var runeList = lodash.map(record.runes, (r) => { return `\n- ${r.number}x ${r.description}`; });
         context.text += `${record.role} ${champion} ${popularity} runes are: ${runeList} \n\n`;
       }
 

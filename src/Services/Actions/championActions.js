@@ -10,7 +10,7 @@ var championActions = {
   // Fetches matchup stats
   fetchMatchup(entities, resolve){
     const champion = this.getChampionFromEntities(entities,0);
-    const popularity = entities.popularity ? entities.popularity[0].value : 'best';
+    const rank = entities.rank ? entities.rank[0].value : 'best';
 
     if(!this.championDoesExist(champion)) return this.resolveError("Sorry I did not understand which champion was requested", resolve);
 
@@ -35,7 +35,7 @@ var championActions = {
                        .value();
 
         // Sort by rank
-        switch(popularity){
+        switch(rank){
           case 'best':
             sorted = lodash.reverse(sorted);
             break;
@@ -48,7 +48,7 @@ var championActions = {
                              .map((m) => { return m.key })
                              .value();
 
-        context.text += `${popularity} matchups for ${champion} in ${record.role} are ${matchups} \n\n`;
+        context.text += `${matchups} are the ${rank} matchups for ${record.role} ${champion}  \n\n`;
       }
 
       return resolve(context);
