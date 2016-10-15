@@ -33,11 +33,12 @@ try {
 }
 
 const accessToken = (() => {
-  if (!config.WIT_TOKEN && !process.env.WIT_TOKEN) {
+  const accessToken = process.env.WIT_TOKEN || config.WIT_TOKEN;
+  if (!accessToken) {
     console.log('Put in server token man');
     process.exit(1);
   }
-  return process.env.WIT_TOKEN || config.WIT_TOKEN;
+  return accessToken;
 })();
 
 const actions = {
