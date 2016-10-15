@@ -18,8 +18,11 @@
   },
   "homepage": "https://github.com/patrick-lai/lulu-engine#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
     "lodash": "^4.16.4",
     "node-wit": "^4.1.0",
+    "request": "^2.75.0",
     "request-promise": "^4.1.1"
   },
   "devDependencies": {

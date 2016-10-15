@@ -23,11 +23,11 @@ try {
 }
 
 const accessToken = (() => {
-  if (!Config.serverToken) {
+  if (!Config.WIT_TOKEN) {
     console.log('Put in server token man');
     process.exit(1);
   }
-  return Config.serverToken;
+  return Config.WIT_TOKEN;
 })();
 
 const actions = {

@@ -14,7 +14,7 @@ class ChampionggApi {
   }
 
   getToken(){
-    return "?api_key="+config.championGGToken;
+    return "?api_key="+config.CHAMPION_GG_TOKEN;
   }
 
   makeUri(endPoint, champion){
