@@ -48,7 +48,7 @@ var championActions = {
                              .map((m) => { return m.key })
                              .value();
 
-        context.text += `${popularity} matchups for ${champion} in ${record.role} are ${matchups} \n`;
+        context.text += `${popularity} matchups for ${champion} in ${record.role} are ${matchups} \n\n`;
       }
 
       return resolve(context);

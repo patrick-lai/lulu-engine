@@ -60,7 +60,7 @@ var skillActions = {
                                 .map((s) => { return s.skill })
                                 .value();
 
-        context.text += `Max ${record.role} ${champion} in this order: ${sortedOrder} \n`;
+        context.text += `Max ${record.role} ${champion} in this order: ${sortedOrder} \n\n`;
       }
 
       return resolve(context);
@@ -100,7 +100,7 @@ var skillActions = {
       // Humanize the data
       context.text = ``;
       for (var record of json){
-        context.text += `${record.role} ${champion} ${popularity} summoners are ${record.summoner1}, ${record.summoner2} \n`;
+        context.text += `${record.role} ${champion} ${popularity} summoners are ${record.summoner1}, ${record.summoner2} \n\n`;
       }
 
       return resolve(context);

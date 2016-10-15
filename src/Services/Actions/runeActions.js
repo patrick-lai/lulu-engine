@@ -41,7 +41,7 @@ var runeActions = {
       context.text = ``;
       for (var record of json){
         var runeList = lodash.map(record.runes, (r) => { return `${r.number}x ${r.description}`; });
-        context.text += `${record.role} ${champion} ${popularity} runes are: ${runeList} \n`;
+        context.text += `${record.role} ${champion} ${popularity} runes are: ${runeList} \n\n`;
       }
 
       return resolve(context);

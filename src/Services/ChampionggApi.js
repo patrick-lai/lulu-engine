@@ -1,8 +1,6 @@
 'use strict'
 
 import config from '../config.js';
-import rp from 'request-promise';
-import lodash from 'lodash';
 import * as api_data from '../api_data';
 import Actions from './Actions';
 
