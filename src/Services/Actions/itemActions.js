@@ -41,7 +41,7 @@ var itemActions = {
       context.text = ``;
       for (var record of json){
         var itemList = lodash.map(record.items, (id) => { return `\n- ${api_data.items[id].name}` });
-        context.text += `Build for ${champion} in ${record.role} are ${itemList} \n\n`;
+        context.text += `${popularity} build for ${champion} in ${record.role} are ${itemList} \n\n`;
       }
 
       return resolve(context);
