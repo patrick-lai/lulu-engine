@@ -8,6 +8,7 @@ import lodash from 'lodash';
 import express from 'express';
 import Server from './Server/Server';
 import FbChatBot from './Server/FbChatBot';
+import Api from './Server/Api';
 
 let Wit = null;
 let interactive = null;
@@ -85,9 +86,11 @@ const wit = new Wit({accessToken, actions});
 const app = express();
 const server = new Server(app);
 const fbChatBot = new FbChatBot(app,wit);
+const api = new Api(app,wit);
 
 // Start serving
 fbChatBot.setUpWebhook();
+api.setupApi();
 server.serve();
 
 interactive(wit);

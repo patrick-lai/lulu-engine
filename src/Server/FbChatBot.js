@@ -6,10 +6,11 @@
 // https://developers.facebook.com/docs/messenger-platform/send-api-reference
 
 import Config from '../config';
-import bodyParser from'body-parser';
+import bodyParser from 'body-parser';
 import crypto from 'crypto';
 import fetch from 'node-fetch';
 import request from 'request';
+import Util from '../Utilities/Util';
 
 class FbChatBot {
   constructor(app, wit){
@@ -61,10 +62,10 @@ class FbChatBot {
       next();
     });
 
-    this.app.use(bodyParser.json({ verify: this.verifyRequestSignature }));
+    var verfication  = bodyParser.json({ verify: this.verifyRequestSignature });
 
     // Webhook setup
-    this.app.get('/webhook', (req, res) => {
+    this.app.get('/webhook', verfication, (req, res) => {
       if (req.query['hub.mode'] === 'subscribe' &&
       req.query['hub.verify_token'] === Config.FB_VERIFY_TOKEN) {
         res.send(req.query['hub.challenge']);
@@ -74,7 +75,7 @@ class FbChatBot {
     });
 
     // Message handler
-    this.app.post('/webhook', (req, res) => {
+    this.app.post('/webhook', verfication, (req, res) => {
       // Parse the Messenger payload
       // See the Webhook reference
       // https://developers.facebook.com/docs/messenger-platform/webhook-reference
@@ -90,7 +91,7 @@ class FbChatBot {
 
               // We retrieve the user's current session, or create one if it doesn't exist
               // This is needed for our bot to figure out the conversation history
-              const sessionId = this.findOrCreateSession(sender);
+              const sessionId = Util.findOrCreateSession(this.sessions,sender);
 
               // We retrieve the message content
               const {text, attachments} = event.message;
@@ -161,23 +162,6 @@ class FbChatBot {
       }
       return json;
     });
-  };
-
-  findOrCreateSession(fbid){
-    let sessionId;
-    // Let's see if we already have a session for the user fbid
-    Object.keys(this.sessions).forEach(k => {
-      if (this.sessions[k].fbid === fbid) {
-        // Yep, got it!
-        sessionId = k;
-      }
-    });
-    if (!sessionId) {
-      // No session found for user fbid, let's create a new one
-      sessionId = new Date().toISOString();
-      this.sessions[sessionId] = {fbid: fbid, context: {}};
-    }
-    return sessionId;
   };
 }
 
