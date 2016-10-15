@@ -1,11 +1,11 @@
-import endpoints from './endpoints';
+import endPoints from './endPoints';
 import championActions from './championActions';
 import itemActions from './itemActions';
 import skillActions from './skillActions';
 import runeActions from './runeActions';
 
 var allActions = {
-  ...endpoints,
+  ...endPoints,
   ...championActions,
   ...itemActions,
   ...skillActions,
