@@ -1,8 +1,12 @@
 'use strict'
 
-import config from '../config.js';
 import * as api_data from '../api_data';
 import Actions from './Actions';
+
+// Import config
+if(process.env.NODE_ENV != 'production'){
+  var config = require('../config').default;
+}
 
 class ChampionggApi {
 
@@ -12,7 +16,8 @@ class ChampionggApi {
   }
 
   getToken(){
-    return "?api_key="+config.CHAMPION_GG_TOKEN;
+    const key = process.env.CHAMPION_GG_TOKEN || config.CHAMPION_GG_TOKEN;
+    return "?api_key="+key;
   }
 
   makeUri(endPoint, champion){

@@ -5,12 +5,16 @@
 // See the Send API reference
 // https://developers.facebook.com/docs/messenger-platform/send-api-reference
 
-import Config from '../config';
 import bodyParser from 'body-parser';
 import crypto from 'crypto';
 import fetch from 'node-fetch';
 import request from 'request';
 import Util from '../Utilities/Util';
+
+// Import config
+if(process.env.NODE_ENV != 'production'){
+  var config = require('../config').default;
+}
 
 class FbChatBot {
   constructor(app, wit){
@@ -43,7 +47,7 @@ class FbChatBot {
       var method = elements[0];
       var signatureHash = elements[1];
 
-      var expectedHash = crypto.createHmac('sha1', Config.FB_APP_SECRET)
+      var expectedHash = crypto.createHmac('sha1', process.env.FB_APP_SECRET || config.FB_APP_SECRET)
       .update(buf)
       .digest('hex');
 

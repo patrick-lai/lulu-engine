@@ -1,14 +1,18 @@
 'use strict';
 
-import Config from './config';
 import { ChampionggApi } from './Services';
 import lodash from 'lodash';
 
 // Server
 import express from 'express';
 import Server from './Server/Server';
-import FbChatBot from './Server/FbChatBot';
+import FbChatBot from './Messenger/FbChatBot';
 import Api from './Server/Api';
+
+// Import config
+if(process.env.NODE_ENV != 'production'){
+  var config = require('./config').default;
+}
 
 let Wit = null;
 let interactive = null;
@@ -29,11 +33,11 @@ try {
 }
 
 const accessToken = (() => {
-  if (!Config.WIT_TOKEN) {
+  if (!config.WIT_TOKEN && !process.env.WIT_TOKEN) {
     console.log('Put in server token man');
     process.exit(1);
   }
-  return Config.WIT_TOKEN;
+  return process.env.WIT_TOKEN || config.WIT_TOKEN;
 })();
 
 const actions = {
