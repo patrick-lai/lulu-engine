@@ -98,4 +98,4 @@ fbChatBot.setUpWebhook();
 api.setupApi();
 server.serve();
 
-interactive(wit);
+if(process.env.NODE_ENV != 'prodution') interactive(wit);
