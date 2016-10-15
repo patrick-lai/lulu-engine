@@ -98,4 +98,7 @@ fbChatBot.setUpWebhook();
 api.setupApi();
 server.serve();
 
-if(process.env.NODE_ENV != 'prodution') interactive(wit);
+if (require.main === module) {
+  console.log("Bot testing mode.");
+  interactive(wit);
+}

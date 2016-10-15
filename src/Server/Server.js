@@ -3,7 +3,7 @@
 class Server {
 
   constructor(app){
-    this.PORT = process.env.PORT || 8445;
+    this.PORT = process.env.PORT || 5000;
     // Starting our webserver and putting it all together
     this.app = app;
   }
