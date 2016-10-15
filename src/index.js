@@ -98,7 +98,7 @@ fbChatBot.setUpWebhook();
 api.setupApi();
 server.serve();
 
-if (require.main === module) {
-  console.log("Bot testing mode.");
+if(process.env.NODE_ENV != 'production') {
+  console.log("CLI - Activated");
   interactive(wit);
 }
