@@ -118,7 +118,7 @@ class FbChatBot {
                   // Our bot did everything it has to do.
                   // Now it's waiting for further messages to proceed.
 
-                  // Send the message back to the user
+                  // Send the message back to the user                  
                   this.fbMessage(sender,context.text);
 
                   console.log('Waiting for next user messages');

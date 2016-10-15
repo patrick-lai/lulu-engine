@@ -46,8 +46,12 @@ const actions = {
     const {sessionId, context, entities} = request;
     const {text, quickreplies} = response;
     return new Promise(function(resolve, reject) {
-      console.log('user said...', request.text);
-      console.log('sending...', JSON.stringify(response));
+      
+      if(process.env.NODE_ENV != 'production'){
+        console.log('user said...', request.text);
+        console.log('sending...', JSON.stringify(response));
+      }
+
       return resolve();
     });
   },
