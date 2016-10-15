@@ -35,9 +35,46 @@ const actions = {
       return resolve();
     });
   },
-  ['fetch-build']({entities, context}) {
+  // Popular/Common/Best type data
+  ['fetch-aggregate-data']({entities, context}) {
     return new Promise(function(resolve, reject) {
-      return championggApi.fetchBuild(entities, resolve);
+      const intent = entities.intent[0].value;
+
+      switch (intent){
+        case 'build':
+          return championggApi.fetchBuild(entities, resolve);
+        case 'starting-build':
+          return championggApi.fetchStartingBuild(entities, resolve);
+        default:
+          console.log(`${intent} not found`);
+          break;
+      }
+      return resolve({
+        text: "Sorry I did not understand you",
+        success: false
+      });
+    });
+  },
+  // Best/Worst/First/Most/Least type data
+  ['fetch-ranked-data']({entities, context}) {
+    return new Promise(function(resolve, reject) {
+      const intent = entities.intent[0].value;
+
+      switch (intent){
+        case 'matchup':
+          return championggApi.fetchMatchup(entities, resolve);
+        case 'skill':
+          return championggApi.fetchSkills(entities, resolve);
+        default:
+          console.log(`${intent} not found`);
+          break;
+      }
+
+      return resolve({
+        text: "Sorry I did not understand you",
+        success: false
+      });
+
     });
   }
 };
