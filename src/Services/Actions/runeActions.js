@@ -5,24 +5,24 @@ import rp from 'request-promise';
 import lodash from 'lodash';
 import * as api_data from '../../api_data';
 
-var rankedData = {
+var runeActions = {
 
-  // Fetches best and popular builds
-  fetchBuild(entities, resolve){
+  // Fetches best and popular runes
+  fetchRunes(entities, resolve){
     const champion = this.getChampionFromEntities(entities,0);
     const popularity = entities.popularity ? entities.popularity[0].value : 'best';
 
-    if(!this.championDoesExist(champion)) this.resolveError("Sorry I did not understand which champion was requested", resolve);
+    if(!this.championDoesExist(champion)) return this.resolveError("Sorry I did not understand which champion was requested", resolve);
 
     // Query champion.gg for best build
     var fetchUri;
 
     switch(popularity){
       case 'best':
-        fetchUri = this.makeUri(this.endpoints.bestItems, champion);
-        break;
+      fetchUri = this.makeUri(this.endpoints.runes.best, champion);
+      break;
       default:
-        fetchUri = this.makeUri(this.endpoints.popularItems, champion);
+      fetchUri = this.makeUri(this.endpoints.runes.popular, champion);
       break;
     }
 
@@ -40,14 +40,14 @@ var rankedData = {
       // Humanize the data
       context.text = ``;
       for (var record of json){
-        var itemList = lodash.map(record.items, (id) => { return api_data.items[id].name; });
-        context.text += `Build for ${champion} in ${record.role} are ${itemList} \n`;
+        var runeList = lodash.map(record.runes, (r) => { return `${r.number}x ${r.description}`; });
+        context.text += `${record.role} ${champion} ${popularity} runes are: ${runeList} \n`;
       }
 
       return resolve(context);
     });
   }
+
 }
 
-
-export default rankedData;
+export default runeActions;

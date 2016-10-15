@@ -1,9 +1,15 @@
-import rankedData from './rankedData';
-import aggregateData from './aggregateData';
 import endpoints from './endpoints';
+import championActions from './championActions';
+import itemActions from './itemActions';
+import skillActions from './skillActions';
+import runeActions from './runeActions';
 
-module.exports = {
-  endpoints,
-  rankedData,
-  aggregateData
-}
+var allActions = {
+  ...endpoints,
+  ...championActions,
+  ...itemActions,
+  ...skillActions,
+  ...runeActions
+};
+
+module.exports = allActions;

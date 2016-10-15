@@ -8,6 +8,11 @@ let Wit = null;
 let interactive = null;
 let championggApi = new ChampionggApi();
 
+let errorResolve = {
+  text: "Sorry I did not understand you",
+  success: false
+}
+
 try {
   // if running from repo
   Wit = require('../').Wit;
@@ -35,45 +40,37 @@ const actions = {
       return resolve();
     });
   },
-  // Popular/Common/Best type data
-  ['fetch-aggregate-data']({entities, context}) {
+  // Fetch rankable data
+  ['fetch-ranked-data']({entities, context}) {
     return new Promise(function(resolve, reject) {
-      const intent = entities.intent[0].value;
+      const intent = entities && entities.intent ? entities.intent[0].value : null;
 
       switch (intent){
         case 'build':
           return championggApi.fetchBuild(entities, resolve);
-        case 'starting-build':
-          return championggApi.fetchStartingBuild(entities, resolve);
-        default:
-          console.log(`${intent} not found`);
           break;
-      }
-      return resolve({
-        text: "Sorry I did not understand you",
-        success: false
-      });
-    });
-  },
-  // Best/Worst/First/Most/Least type data
-  ['fetch-ranked-data']({entities, context}) {
-    return new Promise(function(resolve, reject) {
-      const intent = entities.intent[0].value;
-
-      switch (intent){
+        case 'starting-items':
+          return championggApi.fetchStartingItems(entities, resolve);
+          break;
         case 'matchup':
           return championggApi.fetchMatchup(entities, resolve);
+          break;
         case 'skill':
           return championggApi.fetchSkills(entities, resolve);
+          break;
+        case 'summoners':
+            return championggApi.fetchSummoners(entities, resolve);
+            break;
+        case 'runes':
+            return championggApi.fetchRunes(entities, resolve);
+            break;
+        case null:
         default:
           console.log(`${intent} not found`);
           break;
       }
 
-      return resolve({
-        text: "Sorry I did not understand you",
-        success: false
-      });
+      return resolve(errorResolve);
 
     });
   }

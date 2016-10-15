@@ -4,14 +4,13 @@ import config from '../config.js';
 import rp from 'request-promise';
 import lodash from 'lodash';
 import * as api_data from '../api_data';
-import { endpoints, rankedData, aggregateData } from './Actions';
+import Actions from './Actions';
 
 class ChampionggApi {
 
   constructor(outputPath){
-    Object.assign(this,endpoints);
-    Object.assign(this,rankedData);
-    Object.assign(this,aggregateData);
+    // Extend this Object with actions
+    Object.assign(this,Actions);
   }
 
   getToken(){
@@ -38,7 +37,7 @@ class ChampionggApi {
   }
 
   getChampionFromEntities(entities, rank){
-    if(rank > entities.champion.length) return null;
+    if(!entities || !entities.champion || rank > entities.champion.length) return null;
     return this.capitalizeFirstLetter(entities.champion[rank].value);
   }
 
