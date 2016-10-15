@@ -13,6 +13,10 @@ gulp.task('build', ['clean'], function () {
   gulp.src('./src/**/*.json')
   .pipe(gulp.dest("dist"));
 
+  // Copy public into dist
+  gulp.src('./public/**/*.*')
+  .pipe(gulp.dest("dist/public"));
+
   return gulp.src('./src/**/*.js')
     .pipe(babel({
       presets: ['es2015','stage-2']
@@ -28,7 +32,7 @@ gulp.task('clean', function(){
 gulp.task('watch', ['build'], function() {
   nodemon({
     script: './dist/index.js',
-    ext: 'js',
+    ext: 'js html',
     ignore: ["dist/*"],
     tasks:  ['build'],
     env: { 'NODE_ENV': 'local'}
