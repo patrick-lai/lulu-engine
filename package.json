@@ -8,6 +8,9 @@
     "start": "node dist/index.js",
     "postinstall": "gulp build"
   },
+  "engines": {
+    "node": "6.3.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/patrick-lai/lulu-engine.git"
