@@ -2,13 +2,17 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addMessage} from '../../actions';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import RaisedButton from 'material-ui/RaisedButton';
 import oscilloscope from 'oscilloscope';
 import Time from 'react-time-format'
 import annyang from 'annyang';
 import LuluApi from '../../actions/LuluApi'
 
+// Material stuff
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import RaisedButton from 'material-ui/RaisedButton';
+import TextField from 'material-ui/TextField';
+
+// Less styles
 import './layout.less';
 import './iphone.less';
 
@@ -28,6 +32,9 @@ class Layout extends Component {
         nowTime: new Date(),
         response: "Please ask me a question about league of legends"
       };
+
+      this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
+      this.handleSend = this.handleSend.bind(this)
     }
 
     componentDidMount(){
@@ -69,15 +76,17 @@ class Layout extends Component {
         // Add our commands to annyang
         annyang.addCommands({
           '*anything': function(anything) {
-            console.log(luluApi);
-            console.log(anything);
+            $this.setState({
+                question: anything
+            });
+
             luluApi.sendQuestion(anything, (response)=>{
               $this.setState({
                 response: response.text,
                 responseData: response.data
               })
-              console.log("responded",response);
-            })
+            });
+
           }
         });
 
@@ -85,6 +94,21 @@ class Layout extends Component {
         annyang.start();
       }
 
+    }
+
+    handleTextFieldChange(e){
+      this.setState({
+          question: e.target.value
+      });
+    }
+
+    handleSend(e){
+      luluApi.sendQuestion(this.state.question, (response)=>{
+        this.setState({
+          response: response.text,
+          responseData: response.data
+        })
+      });
     }
 
     render() {
@@ -96,13 +120,6 @@ class Layout extends Component {
           position: 'relative'
         };
 
-        const recordButtonStyle = {
-          bottom: '0',
-          position: 'absolute',
-          padding: '1em 0',
-          width: '100%'
-        };
-
         const statusBarStyle = {
           backgroundColor: 'rgba(255,255,255,0.06)',
           fontFamily: 'arial',
@@ -111,6 +128,7 @@ class Layout extends Component {
         }
 
         return (
+          <MuiThemeProvider>
             <div className="full-screen main-container text-centered">
               <div className="wrapper">
 
@@ -119,11 +137,19 @@ class Layout extends Component {
               			<div className="speaker"></div>
                       <div style={contentAreaStyle}>
                         <div style={statusBarStyle}>
-                          <span style={{float: 'left'}}>Carrier</span> <span className="currentTime"><Time value={this.state.nowTime} format="HH:mm" /></span> <span style={{float: 'right'}}>Bat: 100%</span>
+                          <span style={{float: 'left'}}>Lulu Assistant</span> <span className="currentTime"><Time value={this.state.nowTime} format="HH:mm" /></span> <span style={{float: 'right'}}>Bat: 100%</span>
                         </div>
-                        <canvas className="visualizer" style={{width: '100%', height: '500px'}}></canvas>
-                        <div style={recordButtonStyle}>
-                          {this.state.response}
+                        <canvas className="visualizer" style={{width: '100%', height: '400px'}}></canvas>
+                        <div className="bottomBar">
+                          <p>{this.state.response}</p>
+                          <hr/>
+                          <TextField
+                            floatingLabelText="Type Question Here"
+                            underlineFocusStyle={{borderColor: '#E55960' }}
+                            style={{margin: '0 1em'}}
+                            onChange={this.handleTextFieldChange}
+                          />
+                          <RaisedButton label="Send" onTouchTap={this.handleSend}/>
                         </div>
                       </div>
               		</div>
@@ -132,6 +158,7 @@ class Layout extends Component {
 
               <div className="author">Created by - Patrick Lai</div>
             </div>
+          </MuiThemeProvider>
         );
     }
 }
