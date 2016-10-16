@@ -1,13 +1,15 @@
 import React, { Component, PropTypes } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import Hello from '../components/hello/hello';
+import Layout from '../components/layout/layout';
 import {addMessage} from '../actions';
 
 class App extends Component {
   render(){
     return (
-      <Hello actions={this.props.actions} addmessage={this.props.addmessage}  />
+      <div>
+        <Layout actions={this.props.actions} addmessage={this.props.addmessage}  />
+      </div>
     );
   }
 }
@@ -31,4 +33,4 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-export default connect(mapStateToProps, mapDispatchToProps)(Hello);
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

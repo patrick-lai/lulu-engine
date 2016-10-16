@@ -1,0 +1,222 @@
+//Colors
+
+@colorOne: #d9d9d9;
+@colorTwo: #808080;
+
+//Mixins
+
+.border-radius(@radius) {
+		-webkit-border-radius: @radius;
+		-moz-border-radius: @radius;
+		-o-border-radius: @radius;
+		border-radius: @radius;
+}
+
+.box-shadow (@shadow1, @shadow2: transparent 0 0 0, @shadow3: transparent 0 0 0, @shadow4: transparent 0 0 0, @shadow5: transparent 0 0 0, @shadow6: transparent 0 0 0) {
+		-webkit-box-shadow: @shadow1, @shadow2, @shadow3, @shadow4, @shadow5, @shadow6;
+		-moz-box-shadow: @shadow1, @shadow2, @shadow3, @shadow4, @shadow5, @shadow6;
+		box-shadow: @shadow1, @shadow2, @shadow3, @shadow4, @shadow5, @shadow6;
+}
+
+.transform (@transform) {
+		-webkit-transform: @transform;
+		-moz-transform: @transform;
+		-ms-transform: @transform;
+		-o-transform: @transform;
+}
+
+.transform-origin (@originx, @originy) {
+		-webkit-transform-origin: @originx @originy;
+		-moz-transform-origin: @originx @originy;
+		-ms-transform-origin: @originx @originy;
+		-o-transform-origin: @originx @originy;
+}
+
+.transform-style (@transform-style) {
+		-webkit-transform-style: @transform-style;
+		-moz-transform-style: @transform-style;
+		-ms-transform-style: @transform-style;
+		-o-transform-style: @transform-style;
+}
+
+.perspective (@perspective) {
+		-webkit-perspective: @perspective;
+		-moz-perspective: @perspective;
+		-ms-perspective: @perspective;
+		-o-perspective: @perspective;
+}
+
+.transition (@transition) {
+		-webkit-transition: @transition;
+		-moz-transition: @transition;
+		-ms-transition: @transition;
+		-o-transition: @transition;
+}
+
+//Global
+
+* {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+	-webkit-font-smoothing: antialiased;
+}
+
+html, body {
+	background: #222;
+}
+
+h1 {
+	color: #fff;
+	display: block;
+	position: relative;
+	margin: 40px auto 0;
+	text-align: center;
+	font-size: 1.25em;
+	font-family: 'helvetica neue', helvetica, arial, san-serif;
+}
+
+a.oholloran {
+	color: #ccc;
+	display: block;
+	position: relative;
+	clear: both;
+	margin: 40px auto;
+	text-align: center;
+	font-size: 1.25em;
+	font-family: 'helvetica neue', helvetica, arial, san-serif;
+	text-decoration: none;
+}
+
+a.oholloran:hover {
+	color: #fff;
+}
+
+.wrapper {
+	display: block;
+	position: relative;
+	margin: 60px auto;
+	text-align: center;
+	max-width: 800px;
+	width: 100%;
+	overflow: auto;
+}
+
+.device_wrapper {
+	float: right;
+	position: relative;
+	width: 60%;
+	min-width: 300px;
+	right: 20%;
+	margin: 0;
+}
+
+.device_wrapper.angled {
+	float: left;
+	position: absolute;
+	width: 55%;
+	min-width: 260px;
+	left: 6%;
+	margin: 35px 0 0;
+//LESS Mixins
+	.perspective (400px);
+	.transform-style (preserve 3d);
+	.transition (all 400ms ease);
+}
+
+.device_wrapper.angled:hover {
+//LESS Mixins
+	.transform (translate(-2%,0));
+}
+
+.device_wrapper.angled .device {
+//LESS Mixins
+	.transform (rotateY(5deg) scaleX(0.9));
+	.transition (all 400ms ease 200ms);
+}
+
+.device_wrapper.angled:hover .device {
+//LESS Mixins
+	.transform (rotateY(0) scaleX(1.0));
+	.box-shadow (0 0 0 transparent) !important;
+}
+
+.device_wrapper.angled .device.light {
+//LESS Mixins
+	.box-shadow (-15px 0 0 @colorOne);
+}
+
+.device {
+	width: 88%;
+	padding: 11% 6% 25%;
+//LESS Mixins
+	.border-radius (3em);
+}
+
+.device .speaker {
+	display: block;
+	position: relative;
+	width: 25%;
+	min-height: 8px;
+	margin: 0 auto 14%;
+//LESS Mixins
+	.border-radius (1em);
+}
+
+.device img {
+	display: block;
+	position: relative;
+	width: 100%;
+}
+
+.device.dark {
+	background: darken(@colorTwo, 14%);
+	border: 4px solid darken(@colorTwo, 24%);
+}
+
+.device.dark .speaker {
+	background: darken(@colorTwo, 24%);
+}
+
+.device.dark img {
+//LESS Mixins
+	.box-shadow (0 0 0 4px darken(@colorTwo, 24%));
+}
+
+.device.light {
+	background: lighten(@colorOne, 10%);
+	border: 4px solid @colorOne;
+}
+
+.device.light .speaker {
+	background: @colorOne;
+}
+
+.device.light img {
+//LESS Mixins
+	.box-shadow (0 0 0 4px @colorOne);
+}
+
+@media screen and (max-width: 480px) {
+
+	.device_wrapper, .device_wrapper.angled {
+		display: block;
+		float: none;
+		position: relative;
+		left: 0;
+		width: 94%;
+		min-width: 300px;
+		margin: 0 2%;
+		text-align: center;
+	}
+
+	.device_wrapper.angled {
+		margin: 30px 2% 60px;
+	}
+
+	.device_wrapper.angled:hover {
+	//LESS Mixins
+		.transform (translate(0,0));
+	}
+
+}
