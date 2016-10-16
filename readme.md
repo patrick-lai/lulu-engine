@@ -29,4 +29,7 @@ gulp
 
 ### Deploy
 
-COMING-SOON
+Requires Node 6.3.0
+Set all the config.js fields as environment variables  
+Do a "gulp build"  
+Then run index.js from the dist folder  
