@@ -32,13 +32,6 @@ gulp.task('build-public', function () {
   return gulp.src('./public/**/*.js')
       .pipe(webpack(require('./public/build/webpack.dev.config.js')))
       .pipe(gulp.dest('dist/public'));
-
-  // Copy and babel js public into dist
-  // return gulp.src('./public/**/*.js')
-  //   .pipe(babel({
-  //     presets: ['es2015','stage-2','react']
-  //   }))
-  //   .pipe(gulp.dest("dist/public"));
 });
 
 gulp.task('clean', function(){
