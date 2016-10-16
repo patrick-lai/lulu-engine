@@ -6,6 +6,7 @@ import Recorder from '../recorder/recorder.js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import oscilloscope from 'oscilloscope';
+import Time from 'react-time-format'
 
 import './layout.less';
 import './iphone.less';
@@ -16,6 +17,13 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 class Layout extends Component {
+
+    constructor() {
+      super();
+      this.state = {
+        nowTime: new Date()
+      };
+    }
 
     componentDidMount(){
       var context = new window.AudioContext()
@@ -39,8 +47,15 @@ class Layout extends Component {
       }, function (error) {
         console.error("getUserMedia error:", error);
       });
-    }
 
+      // Time refresher per 5 seconds
+      setInterval(function(){
+        this.setState({
+          nowTime : new Date()
+        })
+      },5000)
+
+    }
 
     render() {
 
@@ -60,19 +75,22 @@ class Layout extends Component {
 
         const statusBarStyle = {
           backgroundColor: 'rgba(255,255,255,0.06)',
-          font: 'arial'
+          fontFamily: 'arial',
+          textAlign: 'center',
+          padding: '0 .5em'
         }
 
         return (
           <MuiThemeProvider>
             <div className="full-screen main-container text-centered">
               <div className="wrapper">
-              	<div className="device_wrapper">
+
+              	<div className="device_wrapper" style={{marginTop: '2em'}}>
               		<div className="device dark">
               			<div className="speaker"></div>
                       <div style={contentAreaStyle}>
                         <div style={statusBarStyle}>
-                          Carrier 4:20PM Battery
+                          <span style={{float: 'left'}}>Carrier</span> <span className="currentTime"><Time value={this.state.nowTime} format="HH:mm" /></span> <span style={{float: 'right'}}>Bat: 100%</span>
                         </div>
                         <canvas className="visualizer" style={{width: '100%', height: '500px'}}></canvas>
                         <div style={recordButtonStyle}>
@@ -83,6 +101,7 @@ class Layout extends Component {
               	</div>
               </div>
 
+              <div className="author">Created by - Patrick Lai</div>
             </div>
           </MuiThemeProvider>
 
