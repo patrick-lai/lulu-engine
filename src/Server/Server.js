@@ -13,10 +13,9 @@ class Server {
 
   // Begins serving enough for facebook chat bot
   serve(){
-    this.app.use("/assets", express.static(path.join(__dirname, 'dist/public/assets')));
-
+    this.app.use(express.static('dist/public'));
     this.app.get('/', function(req,res) {
-      res.sendFile('public/index.html');
+      res.sendfile('dist/public/index.html');
     });
 
     this.app.listen(this.PORT);
