@@ -29,6 +29,7 @@
     "lodash": "^4.16.4",
     "material-ui": "^0.16.0",
     "node-wit": "^4.1.0",
+    "npm-zepto": "^1.1.7",
     "oscilloscope": "^0.2.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",

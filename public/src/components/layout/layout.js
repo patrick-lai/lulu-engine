@@ -2,11 +2,12 @@ import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {addMessage} from '../../actions';
-import Recorder from '../recorder/recorder.js';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import oscilloscope from 'oscilloscope';
 import Time from 'react-time-format'
+import annyang from 'annyang';
+import LuluApi from '../../actions/LuluApi'
 
 import './layout.less';
 import './iphone.less';
@@ -16,12 +17,16 @@ import './iphone.less';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
+// Setup luluApi instance
+var luluApi = new LuluApi();
+
 class Layout extends Component {
 
     constructor() {
       super();
       this.state = {
-        nowTime: new Date()
+        nowTime: new Date(),
+        response: "Please ask me a question about league of legends"
       };
     }
 
@@ -49,11 +54,36 @@ class Layout extends Component {
       });
 
       // Time refresher per 5 seconds
+      var $this = this;
+
       setInterval(function(){
-        this.setState({
+        $this.setState({
           nowTime : new Date()
         })
       },5000)
+
+      if (annyang) {
+
+        console.log("annnyang did render");
+
+        // Add our commands to annyang
+        annyang.addCommands({
+          '*anything': function(anything) {
+            console.log(luluApi);
+            console.log(anything);
+            luluApi.sendQuestion(anything, (response)=>{
+              $this.setState({
+                response: response.text,
+                responseData: response.data
+              })
+              console.log("responded",response);
+            })
+          }
+        });
+
+        // Start listening. You can call this here, or attach this call to an event, button, etc.
+        annyang.start();
+      }
 
     }
 
@@ -81,7 +111,6 @@ class Layout extends Component {
         }
 
         return (
-          <MuiThemeProvider>
             <div className="full-screen main-container text-centered">
               <div className="wrapper">
 
@@ -94,7 +123,7 @@ class Layout extends Component {
                         </div>
                         <canvas className="visualizer" style={{width: '100%', height: '500px'}}></canvas>
                         <div style={recordButtonStyle}>
-                          <RaisedButton label="Speak" style={{margin: '0 auto'}} />
+                          {this.state.response}
                         </div>
                       </div>
               		</div>
@@ -103,8 +132,6 @@ class Layout extends Component {
 
               <div className="author">Created by - Patrick Lai</div>
             </div>
-          </MuiThemeProvider>
-
         );
     }
 }
