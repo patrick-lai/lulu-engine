@@ -34,7 +34,8 @@ class Layout extends Component {
       };
 
       this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
-      this.handleSend = this.handleSend.bind(this)
+      this.handleSend = this.handleSend.bind(this);
+      this.handleResponse = this.handleResponse.bind(this);
     }
 
     componentDidMount(){
@@ -67,7 +68,7 @@ class Layout extends Component {
         $this.setState({
           nowTime : new Date()
         })
-      },5000)
+      },5000);
 
       if (annyang) {
 
@@ -80,19 +81,26 @@ class Layout extends Component {
                 question: anything
             });
 
-            luluApi.sendQuestion(anything, (response)=>{
-              $this.setState({
-                response: response.text,
-                responseData: response.data
-              })
-            });
-
+            luluApi.sendQuestion(anything, $this.handleResponse);
           }
         });
 
         // Start listening. You can call this here, or attach this call to an event, button, etc.
         annyang.start();
       }
+
+    }
+
+    handleResponse(response){
+      this.setState({
+        response: response.text,
+        responseData: response.data
+      })
+
+      annyang.stop();
+      setTimeout(function(){
+        annyang.start();
+      },3000);
 
     }
 
@@ -103,12 +111,7 @@ class Layout extends Component {
     }
 
     handleSend(e){
-      luluApi.sendQuestion(this.state.question, (response)=>{
-        this.setState({
-          response: response.text,
-          responseData: response.data
-        })
-      });
+      luluApi.sendQuestion(this.state.question, this.handleResponse);
     }
 
     render() {
