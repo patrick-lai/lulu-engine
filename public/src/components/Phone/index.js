@@ -125,7 +125,7 @@ class Phone extends Component {
                             floatingLabelText="Type Question Here"
                             underlineFocusStyle={{borderColor: '#E55960' }}
                             style={{margin: '0 1em'}}
-                            value={this.props.luluApi.question}
+                            defaultValue={this.props.luluApi.question}
                             onChange={this.handleTextFieldChange}
                           />
                           <RaisedButton label="Send" onTouchTap={()=>{
