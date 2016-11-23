@@ -4,7 +4,7 @@ const initialState = {
   nowTime: new Date(),
   response: 'Please ask me a question about league of legends',
   responseData: null,
-  question: 'What is lulu\'s best build',
+  question: 'What are lulu\'s best summoners',
   annyang_listen: true
 };
 
