@@ -5,7 +5,7 @@ import  {Provider} from 'react-redux';
 import {Router, Route, browserHistory} from 'react-router';
 import {syncHistoryWithStore} from 'react-router-redux';
 import reducer from './reducers/index';
-import App from './containers/app';
+import Phone from './containers/Phone';
 
 const store = createStore(reducer);
 
@@ -15,9 +15,12 @@ const node = document.getElementById('app');
 render(
     <Provider store={store}>
         <Router history={history}>
-            <Route path="/" component={App}>
+            <Route path="/" component={Phone}>
             </Route>
         </Router>
     </Provider>,
     node
 );
+
+
+export default store;

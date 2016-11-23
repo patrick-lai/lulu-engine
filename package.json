@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node dist/index.js",
+    "watch": "gulp watch",
     "postinstall": "gulp build"
   },
   "engines": {
@@ -29,18 +30,18 @@
     "lodash": "^4.16.4",
     "material-ui": "^0.16.0",
     "node-wit": "^4.1.0",
-    "npm-zepto": "^1.1.7",
     "oscilloscope": "^0.2.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-redux": "^4.4.5",
     "react-router": "^2.8.1",
     "react-router-redux": "^4.0.6",
-    "react-tap-event-plugin": "^1.0.0",
+    "react-tap-event-plugin": "^2.0.0",
     "react-time-format": "0.0.5",
     "redux": "^3.6.0",
     "request": "^2.75.0",
-    "request-promise": "^4.1.1"
+    "request-promise": "^4.1.1",
+    "webpack-zepto": "0.0.1"
   },
   "devDependencies": {
     "babel-cli": "^6.16.0",

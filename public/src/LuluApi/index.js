@@ -1,4 +1,4 @@
-import zepto from 'npm-zepto';
+import $ from 'webpack-zepto';
 
 class LuluApi {
 

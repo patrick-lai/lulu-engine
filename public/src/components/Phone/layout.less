@@ -15,6 +15,37 @@ body{
   }
 }
 
+.help_container{
+  position: fixed;
+  left: 0;
+}
+
+.help_button{
+  margin: 2em;
+  overflow: visible;
+  background: rgba(255,255,255,0.4);
+  padding: .5em;
+  cursor: pointer;
+  height: 1em;
+  width: 300px;
+
+  .help_section{
+    transition: all 1s ease;
+    opacity: 0;
+    width: 400px;
+    text-align: left;
+    height: 500px;
+    margin-top: 2em;
+    font-size: 16pt;
+  }
+}
+
+.help_button:hover{
+  .help_section{
+    opacity: 1;
+  }
+}
+
 .text-centered{
   text-align: center;
 }

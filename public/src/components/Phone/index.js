@@ -1,16 +1,17 @@
 import React, {Component, PropTypes} from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {addMessage} from '../../actions';
+
+// UI imports
 import oscilloscope from 'oscilloscope';
 import Time from 'react-time-format'
 import annyang from 'annyang';
-import LuluApi from '../../actions/LuluApi'
 
 // Material stuff
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+import store from '../../main';
 
 // Less styles
 import './layout.less';
@@ -21,21 +22,11 @@ import './iphone.less';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
-// Setup luluApi instance
-var luluApi = new LuluApi();
+class Phone extends Component {
 
-class Layout extends Component {
-
-    constructor() {
-      super();
-      this.state = {
-        nowTime: new Date(),
-        response: "Please ask me a question about league of legends"
-      };
-
+    constructor(props){
+      super(props);
       this.handleTextFieldChange = this.handleTextFieldChange.bind(this);
-      this.handleSend = this.handleSend.bind(this);
-      this.handleResponse = this.handleResponse.bind(this);
     }
 
     componentDidMount(){
@@ -61,9 +52,9 @@ class Layout extends Component {
         console.error("getUserMedia error:", error);
       });
 
-      // Time refresher per 5 seconds
       var $this = this;
 
+      // Time refresher per 5 seconds
       setInterval(function(){
         $this.setState({
           nowTime : new Date()
@@ -72,17 +63,13 @@ class Layout extends Component {
 
       if (annyang) {
 
-        console.log("annnyang did render");
-
         // Add our commands to annyang
         annyang.addCommands({
           '*anything': function(anything) {
-            $this.setState({
-                question: anything
-            });
-
-            luluApi.sendQuestion(anything, $this.handleResponse);
-          }
+            // Dispatch new question
+            console.log("Detected : ", anything);
+            this.props.actions.newQuestion(anything);
+          }.bind(this)
         });
 
         // Start listening. You can call this here, or attach this call to an event, button, etc.
@@ -91,68 +78,59 @@ class Layout extends Component {
 
     }
 
-    handleResponse(response){
-      this.setState({
-        response: response.text,
-        responseData: response.data
-      })
-
-      annyang.stop();
-      setTimeout(function(){
-        annyang.start();
-      },3000);
-
-    }
-
     handleTextFieldChange(e){
-      this.setState({
-          question: e.target.value
-      });
-    }
-
-    handleSend(e){
-      luluApi.sendQuestion(this.state.question, this.handleResponse);
+      this.props.luluApi.question = e.target.value;
     }
 
     render() {
 
-        const contentAreaStyle = {
-          backgroundColor: '#2A2B2A',
-          height: '60vh',
-          width: '100%',
-          position: 'relative'
-        };
-
-        const statusBarStyle = {
-          backgroundColor: 'rgba(255,255,255,0.06)',
-          fontFamily: 'arial',
-          textAlign: 'center',
-          padding: '0 .5em'
-        }
-
         return (
           <MuiThemeProvider>
+
             <div className="full-screen main-container text-centered">
+
+              <div className="help_container">
+                <div className="help_button">
+                  HOW TO USE
+                  <p className="help_section">
+                    Still Work In Progress <br/>
+                    <br/>
+                    The idea is to make a Siri-like assistant for the game "LOL"<br/>
+                    The natural language recognition cant understand LOL specific jargon.<br/>
+                    Will need to find something that allows custom grammar.<br/>
+                    For now just try typing these questions<br/>
+                    <br/>
+                    1) "What is the best build for yasuo?"<br/><br/>
+                    2) "What is the best summoers for lulu?"<br/><br/>
+                    3) "What champions are good against Syndra?"<br/><br/>
+                    4) "What champions counter jinx?"<br/><br/>
+                  </p>
+                </div>
+              </div>
+
               <div className="wrapper">
 
               	<div className="device_wrapper" style={{marginTop: '2em'}}>
               		<div className="device dark">
               			<div className="speaker"></div>
-                      <div style={contentAreaStyle}>
-                        <div style={statusBarStyle}>
-                          <span style={{float: 'left'}}>Lulu Assistant</span> <span className="currentTime"><Time value={this.state.nowTime} format="HH:mm" /></span> <span style={{float: 'right'}}>Bat: 100%</span>
+                      <div className="contentAreaStyle">
+                        <div className="statusBarStyle">
+                          <span style={{float: 'left'}}>Lulu Assistant</span> <span className="currentTime"><Time value={this.props.luluApi.nowTime} format="HH:mm" /></span> <span style={{float: 'right'}}>Bat: 100%</span>
                         </div>
                         <canvas className="visualizer" style={{width: '100%', height: '400px'}}></canvas>
                         <div className="bottomBar">
-                          <p>{this.state.response}</p>
+                          <p>{this.props.luluApi.response}</p>
                           <hr/>
                           <TextField
                             floatingLabelText="Type Question Here"
                             underlineFocusStyle={{borderColor: '#E55960' }}
                             style={{margin: '0 1em'}}
+                            value={this.props.luluApi.question}
                             onChange={this.handleTextFieldChange}
                           />
-                          <RaisedButton label="Send" onTouchTap={this.handleSend}/>
+                          <RaisedButton label="Send" onTouchTap={()=>{
+                            this.props.actions.sendQuestion(this.props.luluApi.question);
+                          }}/>
                         </div>
                       </div>
               		</div>
@@ -166,9 +144,6 @@ class Layout extends Component {
     }
 }
 
-Layout.propTypes = {
-    actions: PropTypes.object.isRequired,
-    addmessage: PropTypes.object
-};
+Phone.contextTypes = { store: React.PropTypes.object };
 
-export default Layout;
+export default Phone;

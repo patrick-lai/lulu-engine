@@ -1,1 +1,5 @@
-export const ADD_MESSAGE = 'ADD_MESSAGE';
+export const NEW_QUESTION = 'NEW_QUESTION';
+export const NEW_RESPONSE = 'NEW_RESPONSE';
+export const SEND_QUESTION = 'SEND_QUESTION';
+export const ANNYANG_LISTEN = 'ANNYANG_LISTEN';
+export const ANNYANG_IGNORE = 'ANNYANG_IGNORE';

@@ -1,13 +1,9 @@
-import {
-    combineReducers
-} from 'redux';
-import addmessage from './addmessage';
-import {
-    routerReducer
-} from 'react-router-redux';
+import { combineReducers } from 'redux';
+import { routerReducer } from 'react-router-redux';
+import luluApi from './luluApi';
 
 const rootReducer = combineReducers({
-    addmessage,
+    luluApi,
     routing: routerReducer
 });
 
